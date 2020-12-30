@@ -1,0 +1,98 @@
+RemoteWorkAssistantServer API
+
+POST /api/v1/user
+	ユーザー登録
+	request:
+		Body: { "email": "sample@example.com", "password": "1234" }
+	response:
+		200 OK
+		409 Conflict: { "message": "E-mail address is conflicted." }
+
+DELETE /api/v1/user?email=sample@example.com
+	ユーザー削除
+	※実装未定。懸念事項あり。
+	request:
+		Authorization: Bearer {accessToken}
+	response:
+		200 OK
+		401 Unauthorized: { "message": "Authentication error." }
+		404 NotFound:  { "message": "Not found e-mail address." }
+
+PUT /api/v1/user
+	ユーザー情報(パスワード)更新
+	※実装未定。懸念事項あり。
+	request:
+		Authorization: Bearer {accessToken}
+		Body: { "email": "sample@example.com", "password": "1234" }
+	response:
+		200 OK
+		401 Unauthorized: { "message": "Authentication error." }
+
+PUT /api/v1/user/login
+	ログイン
+	request:
+		Body: { "email": "sample@example.com", "password": "1234" }
+	response:
+		200 OK
+			{
+				"accessToken": "",
+				"token_type": "bearer",
+				"email": "sample@example.com"
+			}
+
+POST /api/v1/pc
+	PC登録
+	request:
+		Authorization: Bearer {accessToken}
+		{
+			"email": "email@example.com",
+			"pcName": "MyDesktopPC",
+		}
+	response:
+		200 OK
+		401 Unauthorized: { "message": "Authentication failure." }
+		404 NotFound:  { "message": "Not found PC name." }
+		409 Conflict:  { "message": "PC name is conflicted." }
+
+PUT /api/v1/pc
+	PC名称変更
+	request:
+		Authorization: Bearer {accessToken}
+		{
+			"email": "email@example.com",
+			"prePcName": "MyDesktopPC",
+			"newPcName": "RenamedMyDesktopPC",
+		}
+	response:
+		200 OK
+		401 Unauthorized: { "message": "Authentication failure." }
+		404 NotFound:  { "message": "Not found PC name." }
+		409 Conflict:  { "message": "PC name is conflicted." }
+
+PUT /api/v1/pc/ipaddress
+	IPアドレス登録
+	request:
+		Authorization: Bearer {accessToken}
+		{
+			"email": "email@example.com",
+			"pcName": "MyDesktopPC",
+			"ipAddress": "コマンド「ipconfig /all」の出力結果"
+		}
+	response:
+		200 OK
+		401 Unauthorized: { "message": "Authentication failure." }
+		404 NotFound
+
+GET /api/v1/pc/ipaddress?email=sample@example.com
+	IPアドレス取得
+	request:
+		Authorization: Bearer {accessToken}
+	response:
+		{
+			"email": "email@example.com",
+			"pc": [
+				{ "pcName": "MyDesktopPC", "ipAddress": "コマンド「ipconfig /all」の出力結果" },
+				{ "pcName": "MyNotePC", "ipAddress": "コマンド「ipconfig /all」の出力結果" }
+			]
+		}
+
