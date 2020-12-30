@@ -16,7 +16,7 @@ namespace RemoteWorkAssistant.Server.Controllers
     /// </summary>
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UserController : ControllerBase
     {
         private readonly RemoteWorkAssistantContext _context;
@@ -29,7 +29,7 @@ namespace RemoteWorkAssistant.Server.Controllers
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<ActionResult<UserRecord>> RegisterUser(UserRegisterReq userRegisterReq)
         {
             UserRecord userRecord = UserRecordConverter.ConvertFromUserPostReq(userRegisterReq);
@@ -48,7 +48,7 @@ namespace RemoteWorkAssistant.Server.Controllers
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("login")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<IActionResult> Login(UserLoginReq userLoginReq)
         {
             if (!this._context.ExistsUserRecord(userLoginReq.MailAddress)) {
@@ -75,7 +75,7 @@ namespace RemoteWorkAssistant.Server.Controllers
 
         // GET: api/v1/User
         [HttpGet]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<ActionResult<IEnumerable<UserRecord>>> GetUserTable()
         {
             return await _context.UserTable.ToListAsync();
