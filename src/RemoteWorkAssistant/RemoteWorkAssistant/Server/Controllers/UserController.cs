@@ -125,31 +125,6 @@ namespace RemoteWorkAssistant.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/User
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<UserRecord>> PostUserRecord(UserRecord userRecord)
-        {
-            _context.UserTable.Add(userRecord);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (UserRecordExists(userRecord.MailAddress))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetUserRecord", new { id = userRecord.MailAddress }, userRecord);
-        }
-
         // DELETE: api/User/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserRecord(string id)
