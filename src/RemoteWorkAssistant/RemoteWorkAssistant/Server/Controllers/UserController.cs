@@ -73,14 +73,15 @@ namespace RemoteWorkAssistant.Server.Controllers
 
 
 
-        // GET: api/User
+        // GET: api/v1/User
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<UserRecord>>> GetUserTable()
         {
             return await _context.UserTable.ToListAsync();
         }
 
-        // GET: api/User/5
+        // GET: api/v1/User/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserRecord>> GetUserRecord(string id)
         {
@@ -94,7 +95,7 @@ namespace RemoteWorkAssistant.Server.Controllers
             return userRecord;
         }
 
-        // PUT: api/User/5
+        // PUT: api/v1/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUserRecord(string id, UserRecord userRecord)
@@ -125,7 +126,7 @@ namespace RemoteWorkAssistant.Server.Controllers
             return NoContent();
         }
 
-        // DELETE: api/User/5
+        // DELETE: api/v1/User/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserRecord(string id)
         {
