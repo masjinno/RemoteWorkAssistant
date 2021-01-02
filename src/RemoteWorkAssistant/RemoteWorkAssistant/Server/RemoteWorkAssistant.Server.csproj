@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+  <ProjectReference Include="..\Client\RemoteWorkAssistant.Client.csproj" />
   <ProjectReference Include="..\Shared\RemoteWorkAssistant.Shared.csproj" />
   </ItemGroup>
 
