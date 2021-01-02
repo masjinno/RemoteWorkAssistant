@@ -23,7 +23,7 @@ namespace RemoteWorkAssistant.Server.Controllers
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UserController : ControllerBase
     {
         private readonly RemoteWorkAssistantContext _context;
