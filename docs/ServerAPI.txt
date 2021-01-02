@@ -39,6 +39,7 @@ PUT /api/v1/user/login
 				"token_type": "bearer",
 				"email": "sample@example.com"
 			}
+		401 Unauthorized: { "message": "Authentication error." }
 
 POST /api/v1/pc
 	PC“o˜^

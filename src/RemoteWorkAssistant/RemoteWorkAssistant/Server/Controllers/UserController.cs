@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using RemoteWorkAssistant.Server.Constants;
 using RemoteWorkAssistant.Server.Converters;
 using RemoteWorkAssistant.Server.Models;
@@ -14,23 +20,27 @@ namespace RemoteWorkAssistant.Server.Controllers
     /// <summary>
     /// 参考：https://docs.microsoft.com/ja-jp/aspnet/web-api/overview/security/individual-accounts-in-web-api
     /// </summary>
+    [Produces("application/json")]
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly RemoteWorkAssistantContext _context;
+        private IConfiguration _config;
 
-        public UserController(RemoteWorkAssistantContext context)
+        public UserController(RemoteWorkAssistantContext context, IConfiguration config)
         {
-            _context = context;
+            this._context = context;
+            this._config = config;
         }
 
         // POST: api/User
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        //[AllowAnonymous]
-        public async Task<ActionResult<UserRecord>> RegisterUser(UserRegisterReq userRegisterReq)
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> RegisterUser([FromBody]UserRegisterReq userRegisterReq)
         {
             UserRecord userRecord = UserRecordConverter.ConvertFromUserPostReq(userRegisterReq);
 
@@ -46,11 +56,17 @@ namespace RemoteWorkAssistant.Server.Controllers
         }
 
         // PUT: api/User/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("login")]
-        //[AllowAnonymous]
-        public async Task<IActionResult> Login(UserLoginReq userLoginReq)
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> Login([FromBody]UserLoginReq userLoginReq)
         {
+            if (string.IsNullOrEmpty(userLoginReq.MailAddress) || string.IsNullOrEmpty(userLoginReq.Password))
+            {
+                return Unauthorized(new Error(Messages.AUTHENTICATION_ERROR));
+            }
+
             if (!this._context.ExistsUserRecord(userLoginReq.MailAddress)) {
                 return Unauthorized(new Error(Messages.AUTHENTICATION_ERROR));
             }
@@ -65,7 +81,18 @@ namespace RemoteWorkAssistant.Server.Controllers
             }
         }
 
+        //Token生成
+        private string BuildToken(UserRecord user)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+              _config["Jwt:Issuer"],
+              expires: DateTime.Now.AddHours(24), // トークンの有効期限は1日
+              signingCredentials: creds);
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
 
 
 
@@ -75,7 +102,7 @@ namespace RemoteWorkAssistant.Server.Controllers
 
         // GET: api/v1/User
         [HttpGet]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<UserRecord>>> GetUserTable()
         {
             return await _context.UserTable.ToListAsync();
