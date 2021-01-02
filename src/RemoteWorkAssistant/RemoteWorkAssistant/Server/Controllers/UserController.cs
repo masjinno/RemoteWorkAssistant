@@ -73,7 +73,7 @@ namespace RemoteWorkAssistant.Server.Controllers
             UserRecord userRecord = await this._context.UserTable.FindAsync(userLoginReq.MailAddress);
             if (userRecord.Password.Equals(userLoginReq.Password))
             {
-                return Ok(new UserLoginResp());
+                return Ok(new UserLoginResp { AccessToken = this.BuildToken(userRecord) });
             }
             else
             {
