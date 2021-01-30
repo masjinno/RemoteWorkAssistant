@@ -11,8 +11,6 @@ POST /api/v1/user
 DELETE /api/v1/user?email=sample@example.com
 	ユーザー削除
 	※実装未定。懸念事項あり。
-	request:
-		Authorization: Bearer {accessToken}
 	response:
 		200 OK
 		401 Unauthorized: { "message": "Authentication error." }
@@ -22,31 +20,17 @@ PUT /api/v1/user
 	ユーザー情報(パスワード)更新
 	※実装未定。懸念事項あり。
 	request:
-		Authorization: Bearer {accessToken}
 		Body: { "email": "sample@example.com", "password": "1234" }
 	response:
 		200 OK
-		401 Unauthorized: { "message": "Authentication error." }
-
-PUT /api/v1/user/login
-	ログイン
-	request:
-		Body: { "email": "sample@example.com", "password": "1234" }
-	response:
-		200 OK
-			{
-				"accessToken": "",
-				"token_type": "bearer",
-				"email": "sample@example.com"
-			}
 		401 Unauthorized: { "message": "Authentication error." }
 
 POST /api/v1/pc
 	PC登録
 	request:
-		Authorization: Bearer {accessToken}
 		{
 			"email": "email@example.com",
+			"password": "1234,
 			"pcName": "MyDesktopPC",
 		}
 	response:
@@ -57,10 +41,11 @@ POST /api/v1/pc
 
 PUT /api/v1/pc
 	PC名称変更
+	※実装未定
 	request:
-		Authorization: Bearer {accessToken}
 		{
 			"email": "email@example.com",
+			"password": "1234,"
 			"prePcName": "MyDesktopPC",
 			"newPcName": "RenamedMyDesktopPC",
 		}
@@ -73,9 +58,9 @@ PUT /api/v1/pc
 PUT /api/v1/pc/ipaddress
 	IPアドレス登録
 	request:
-		Authorization: Bearer {accessToken}
 		{
 			"email": "email@example.com",
+			"password": "1234,
 			"pcName": "MyDesktopPC",
 			"ipAddress": "コマンド「ipconfig /all」の出力結果"
 		}
@@ -84,16 +69,16 @@ PUT /api/v1/pc/ipaddress
 		401 Unauthorized: { "message": "Authentication failure." }
 		404 NotFound
 
-GET /api/v1/pc/ipaddress?email=sample@example.com
+PUT /api/v1/pc/ipaddress/get
 	IPアドレス取得
 	request:
-		Authorization: Bearer {accessToken}
+		{ "email": "email@example.com", "password": "1234" }
 	response:
 		{
 			"email": "email@example.com",
 			"pc": [
-				{ "pcName": "MyDesktopPC", "ipAddress": "コマンド「ipconfig /all」の出力結果" },
-				{ "pcName": "MyNotePC", "ipAddress": "コマンド「ipconfig /all」の出力結果" }
+				{ "pcName": "MyDesktopPC", "ipAddress": "コマンド「ipconfig /all」の出力結果", "datetime": "2014-10-10T13:50:40+09:00" },
+				{ "pcName": "MyNotePC", "ipAddress": "コマンド「ipconfig /all」の出力結果", "datetime": "2014-10-10T13:50:40+09:00" }
 			]
 		}
 

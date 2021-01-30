@@ -2,7 +2,7 @@
 
 namespace RemoteWorkAssistant.Shared.Dto
 {
-    public class UserLoginReq
+    public abstract class UserAuthorization
     {
         [JsonPropertyName("email")]
         public string MailAddress { get; set; }

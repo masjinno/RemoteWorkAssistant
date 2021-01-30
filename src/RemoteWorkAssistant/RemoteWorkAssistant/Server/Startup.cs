@@ -27,23 +27,6 @@ namespace RemoteWorkAssistant.Server
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-            //services.AddAuthentication(option =>
-            //{
-            //    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //}).AddJwtBearer(options =>
-            //{
-            //    options.TokenValidationParameters = new TokenValidationParameters()
-            //    {
-            //        ValidateIssuer = true,
-            //        ValidateAudience = true,
-            //        ValidateLifetime = true, // トークンの有効期限の検証
-            //        ValidateIssuerSigningKey = true, // 署名キーの検証
-            //        ValidIssuer = Configuration["Jwt:Issuer"],
-            //        ValidAudience = Configuration["Jwt:Issuer"],
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-            //    };
-            //});
             services.AddDbContext<RemoteWorkAssistantContext>(opt => opt.UseInMemoryDatabase("RemoteWorkAssistantData"));
         }
 

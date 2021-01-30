@@ -29,5 +29,12 @@ namespace RemoteWorkAssistant.Server.Models
         /// 格納する際に該当コマンドで出力されたものか判断していない。
         /// </summary>
         public string IpAddress { get; set; }
+
+        /// <summary>
+        /// レコードが更新された日時。
+        /// ISO 8601形式。
+        /// 例：2014-10-10T13:50:40+09:00
+        /// </summary>
+        public string UpdatedDateTime { get; set; }
     }
 }

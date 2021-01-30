@@ -5,7 +5,7 @@ namespace RemoteWorkAssistant.Server.Converters
 {
     public class UserRecordConverter
     {
-        public static UserRecord ConvertFromUserPostReq(UserRegisterReq userRegisterReq)
+        public UserRecord ConvertFromUserRegisterReq(UserRegisterReq userRegisterReq)
         {
             return new UserRecord
             {
