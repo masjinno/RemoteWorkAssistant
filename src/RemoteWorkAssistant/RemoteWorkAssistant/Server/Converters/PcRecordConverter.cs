@@ -24,11 +24,12 @@ namespace RemoteWorkAssistant.Server.Converters
                     pcRegisterReq.MailAddress, pcRegisterReq.PcName),
                 MailAddress = pcRegisterReq.MailAddress,
                 PcName = pcRegisterReq.PcName,
-                IpAddress = null
+                IpAddress = null,
+                UpdatedDateTime = null
             };
         }
 
-        internal PcRecord ConvertFromIpAddressUpdateReq(IpAddressUpdateReq ipAddressUpdateReq)
+        internal PcRecord ConvertFromIpAddressUpdateReq(IpAddressUpdateReq ipAddressUpdateReq, string updatedDateTime)
         {
             return new PcRecord
             {
@@ -36,7 +37,8 @@ namespace RemoteWorkAssistant.Server.Converters
                     ipAddressUpdateReq.MailAddress, ipAddressUpdateReq.PcName),
                 MailAddress = ipAddressUpdateReq.MailAddress,
                 PcName = ipAddressUpdateReq.PcName,
-                IpAddress = ipAddressUpdateReq.IpAddress
+                IpAddress = ipAddressUpdateReq.IpAddress,
+                UpdatedDateTime = updatedDateTime
             };
         }
     }

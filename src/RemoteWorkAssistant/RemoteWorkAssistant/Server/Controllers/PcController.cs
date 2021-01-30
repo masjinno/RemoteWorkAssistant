@@ -101,7 +101,11 @@ namespace RemoteWorkAssistant.Server.Controllers
                 return BadRequest(new Error(Messages.AUTHENTICATION_ERROR));
             }
 
-            PcRecord pcInfo = this._pcRecordConverter.ConvertFromIpAddressUpdateReq(ipAddressUpdateReq);
+            DateTime requestedDateTimeUtc = DateTime.UtcNow;
+            TimeZoneInfo tst = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+            DateTime tstDateTime = TimeZoneInfo.ConvertTimeFromUtc(requestedDateTimeUtc, tst);
+            string iso8601DateTime = tstDateTime.ToString("yyyy-MM-dd'T'HH:mm:sszzz");
+            PcRecord pcInfo = this._pcRecordConverter.ConvertFromIpAddressUpdateReq(ipAddressUpdateReq, iso8601DateTime);
             this._context.Entry(pcInfo).State = EntityState.Modified;
 
             try
