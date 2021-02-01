@@ -21,7 +21,6 @@ namespace RemoteWorkAssistant.Server.Controllers
     /// <summary>
     /// 参考：https://docs.microsoft.com/ja-jp/aspnet/web-api/overview/security/individual-accounts-in-web-api
     /// </summary>
-    [Produces("application/json")]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -37,8 +36,6 @@ namespace RemoteWorkAssistant.Server.Controllers
 
         // POST: api/User
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> RegisterUser([FromBody]UserRegisterReq userRegisterReq)
         {
             UserRecord userRecord = this._userRecordConverter.ConvertFromUserRegisterReq(userRegisterReq);
@@ -58,8 +55,7 @@ namespace RemoteWorkAssistant.Server.Controllers
 
 
         // GET: api/v1/User
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet("debug")]
         public async Task<ActionResult<IEnumerable<UserRecord>>> GetUserTable()
         {
             return await _context.UserTable.ToListAsync();

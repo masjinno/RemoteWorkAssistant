@@ -9,13 +9,6 @@ namespace RemoteWorkAssistant.Server.Converters
 {
     public class PcRecordConverter
     {
-        private readonly RemoteWorkAssistantContext _context;
-
-        public PcRecordConverter(RemoteWorkAssistantContext context)
-        {
-            this._context = context;
-        }
-
         public PcRecord ConvertFromPcRegisterReq(PcRegisterReq pcRegisterReq)
         {
             return new PcRecord

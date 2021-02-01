@@ -26,15 +26,12 @@ namespace RemoteWorkAssistant.Server.Controllers
         {
             this._context = context;
             this._authService = new AuthenticateService(context);
-            this._pcRecordConverter = new PcRecordConverter(context);
+            this._pcRecordConverter = new PcRecordConverter();
         }
 
         // POST: api/v1/pc
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> RegisterPc(PcRegisterReq pcRegisterReq)
         {
             if (!this._authService.Authenticate(pcRegisterReq))
