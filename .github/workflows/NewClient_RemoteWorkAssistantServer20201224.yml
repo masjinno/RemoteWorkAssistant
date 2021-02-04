@@ -32,5 +32,5 @@ jobs:
       with:
         app-name: 'RemoteWorkAssistantServer20201224'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_109158b641154d7684256b8d7707be77 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_ae2b445bedff4b77bbabfcb7d2775b9f }}
         package: ${{env.DOTNET_ROOT}}/myapp 
