@@ -1,7 +1,17 @@
 ﻿@page "/user"
 
-<h1>User</h1>
+<h1>ユーザー管理画面</h1>
+<h2>新規ユーザーの登録</h2>
+<label>メールアドレス: <input type="text" @bind="userName" /></label><br />
+<label>パスワード: <input type="password" @bind="password" /></label><br />
+<button class="btn btn-primary" @onclick="RegisterUser" >登録</button>
 
 @code {
+    private string userName;
+    private string password;
 
+    private void RegisterUser()
+    {
+        
+    }
 }
