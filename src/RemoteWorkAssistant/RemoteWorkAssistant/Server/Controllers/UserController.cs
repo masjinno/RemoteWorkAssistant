@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using RemoteWorkAssistant.Server.Constants;
 using RemoteWorkAssistant.Server.Converters;
 using RemoteWorkAssistant.Server.Models;
@@ -42,7 +33,7 @@ namespace RemoteWorkAssistant.Server.Controllers
 
             if (this._context.ExistsUserRecord(userRecord.MailAddress))
             {
-                return Conflict(new Error(Messages.EMAIL_CONFLICT));
+                return Conflict(new Error { Message = Messages.EMAIL_CONFLICT.GetStringValue() });
             }
 
             this._context.UserTable.Add(userRecord);

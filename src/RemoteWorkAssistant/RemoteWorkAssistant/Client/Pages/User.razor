@@ -1,17 +1,46 @@
 ﻿@page "/user"
+@using RemoteWorkAssistant.Shared.Dto
+@using System.Net
+@using System.Text
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject HttpClient Http
+@inject IJSRuntime JsRuntime
 
 <h1>ユーザー管理画面</h1>
+
 <h2>新規ユーザーの登録</h2>
-<label>メールアドレス: <input type="text" @bind="userName" /></label><br />
-<label>パスワード: <input type="password" @bind="password" /></label><br />
-<button class="btn btn-primary" @onclick="RegisterUser" >登録</button>
+
+<div>
+    <p>メールアドレス: <input type="text" @bind="mailAddress" /></p>
+    <p>パスワード: <input type="password" @bind="password" /></p>
+    <button class="btn btn-primary" @onclick="RegisterUser">登録</button>
+</div>
 
 @code {
-    private string userName;
+    private string mailAddress;
     private string password;
 
-    private void RegisterUser()
+    private readonly string REGISTER_USER_URI = "api/v1/user";
+
+    private async void RegisterUser()
     {
-        
+        UserRegisterReq reqBodyObj = new UserRegisterReq
+        {
+            MailAddress = this.mailAddress,
+            Password = this.password
+        };
+        StringContent reqBody = new StringContent(JsonSerializer.Serialize(reqBodyObj), Encoding.UTF8, @"application/json");
+        HttpResponseMessage response = await Http.PostAsync(this.REGISTER_USER_URI, reqBody);
+
+        StringBuilder sb = new StringBuilder("登録結果: ");
+        sb.Append(response.StatusCode.ToString());
+        if (!response.IsSuccessStatusCode)
+        {
+            string respJson = await response.Content.ReadAsStringAsync();
+            Error error = JsonSerializer.Deserialize<Error>(respJson);
+            sb.Append("\r\n詳細: ").Append(error.Message);
+        }
+        await JsRuntime.InvokeVoidAsync("alert", sb.ToString());
     }
 }

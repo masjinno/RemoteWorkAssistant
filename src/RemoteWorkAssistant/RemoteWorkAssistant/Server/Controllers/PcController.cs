@@ -36,13 +36,13 @@ namespace RemoteWorkAssistant.Server.Controllers
         {
             if (!this._authService.Authenticate(pcRegisterReq))
             {
-                return BadRequest(new Error(Messages.AUTHENTICATION_ERROR));
+                return BadRequest(new Error { Message = Messages.AUTHENTICATION_ERROR.GetStringValue() });
             }
 
             PcRecord pcInfo = this._pcRecordConverter.ConvertFromPcRegisterReq(pcRegisterReq);
             if (this._context.ExistsPcRecord(pcInfo.Id))
             {
-                return Conflict(new Error(Messages.PC_NAME_CONFLICT));
+                return Conflict(new Error { Message = Messages.PC_NAME_CONFLICT.GetStringValue() });
             }
 
             this._context.PcTable.Add(pcInfo);
@@ -95,7 +95,7 @@ namespace RemoteWorkAssistant.Server.Controllers
         {
             if (!this._authService.Authenticate(ipAddressUpdateReq))
             {
-                return BadRequest(new Error(Messages.AUTHENTICATION_ERROR));
+                return BadRequest(new Error { Message = Messages.AUTHENTICATION_ERROR.GetStringValue() });
             }
 
             DateTime requestedDateTimeUtc = DateTime.UtcNow;
@@ -113,7 +113,7 @@ namespace RemoteWorkAssistant.Server.Controllers
             {
                 if (!this._context.ExistsPcRecord(pcInfo.Id))
                 {
-                    return NotFound(new Error(Messages.PC_NAME_NOT_FOUND));
+                    return NotFound(new Error { Message = Messages.PC_NAME_NOT_FOUND.GetStringValue() });
                 }
                 else
                 {
@@ -131,7 +131,7 @@ namespace RemoteWorkAssistant.Server.Controllers
         {
             if (!this._authService.Authenticate(ipAddressGetReq))
             {
-                return BadRequest(new Error(Messages.AUTHENTICATION_ERROR));
+                return BadRequest(new Error { Message = Messages.AUTHENTICATION_ERROR.GetStringValue() } );
             }
 
             IpAddressGetResp resp = new IpAddressGetResp
