@@ -1,7 +1,66 @@
-﻿@page "/ipaddress" 
+﻿@page "/ipaddress"
+@using RemoteWorkAssistant.Shared.Dto
+@using System.Text
+@using System.Text.Json
+@inject HttpClient Http
+@inject IJSRuntime JsRuntime
 
 <h1>IP Address</h1>
 
-@code {
+<h2>IPアドレス確認</h2>
 
+<div>
+    <p>メールアドレス: <input type="text" @bind="mailAddress" placeholder="address@example.com" /></p>
+    <p>パスワード: <input type="password" @bind="password" /></p>
+    <button class="btn btn-primary" @onclick="GetIpAddress">IPアドレス情報取得</button>
+</div>
+
+@if (ipAddressList != null)
+{
+    @foreach (Tuple<string, string> pc in ipAddressList)
+    {
+        <div>
+            <input type="checkbox" />
+            <label>@pc.Item1</label>
+            <div>
+                <p>@pc.Item2</p>
+            </div>
+        </div>
+    }
+}
+
+
+@code {
+    private string mailAddress;
+    private string password;
+
+    private readonly string GET_IPADDRESS_URI = "api/v1/pc/ipaddress/get";
+
+    private List<Tuple<string, string>> ipAddressList;
+
+    private async void GetIpAddress()
+    {
+        IpAddressGetReq reqBodyObj = new IpAddressGetReq
+        {
+            MailAddress = this.mailAddress,
+            Password = this.password
+        };
+        StringContent reqBody = new StringContent(JsonSerializer.Serialize(reqBodyObj), Encoding.UTF8, @"application/json");
+        HttpResponseMessage response = await Http.PutAsync(this.GET_IPADDRESS_URI, reqBody);
+
+        // レスポンス異常時
+        if (!response.IsSuccessStatusCode)
+        {
+            string respJson = await response.Content.ReadAsStringAsync();
+            Error error = JsonSerializer.Deserialize<Error>(respJson);
+
+            StringBuilder sb = new StringBuilder("取得結果: ").Append(response.StatusCode.ToString());
+            sb.Append("\r\n詳細: ").Append(error.Message);
+            await JsRuntime.InvokeVoidAsync("alert", sb.ToString());
+            return;
+        }
+
+        // 正常時
+        //foreach ()
+    }
 }

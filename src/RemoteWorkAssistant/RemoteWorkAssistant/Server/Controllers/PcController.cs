@@ -127,7 +127,7 @@ namespace RemoteWorkAssistant.Server.Controllers
         // PUT: api/v1/pc/ipaddress
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("ipaddress/get")]
-        public async Task<ActionResult<IpAddressGetResp>> PutIpAddressGet(UserAuthorization ipAddressGetReq)
+        public async Task<ActionResult<IpAddressGetResp>> PutIpAddressGet(IpAddressGetReq ipAddressGetReq)
         {
             if (!this._authService.Authenticate(ipAddressGetReq))
             {
