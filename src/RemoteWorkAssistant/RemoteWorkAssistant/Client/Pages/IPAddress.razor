@@ -17,26 +17,31 @@
 
 @if (ipAddressList != null)
 {
-    @foreach (Tuple<string, string> pc in ipAddressList)
+    @foreach (Tuple<string, List<string>, string> pc in ipAddressList)
     {
         <div>
             <input type="checkbox" />
             <label>@pc.Item1</label>
             <div>
-                <p>@pc.Item2</p>
+                <p>更新日時：@pc.Item3</p>
+                <p>
+                    @foreach (string ia in pc.Item2)
+                    {
+                        <label>@ia</label><br />
+                    }
+                </p>
             </div>
         </div>
     }
 }
 
-
 @code {
     private string mailAddress;
     private string password;
+    /// <summary>PC名称, IPアドレス, 更新日時のリスト</summary>
+    private List<Tuple<string, List<string>, string>> ipAddressList;
 
     private readonly string GET_IPADDRESS_URI = "api/v1/pc/ipaddress/get";
-
-    private List<Tuple<string, string>> ipAddressList;
 
     private async void GetIpAddress()
     {
@@ -51,8 +56,8 @@
         // レスポンス異常時
         if (!response.IsSuccessStatusCode)
         {
-            string respJson = await response.Content.ReadAsStringAsync();
-            Error error = JsonSerializer.Deserialize<Error>(respJson);
+            string respErrorJson = await response.Content.ReadAsStringAsync();
+            Error error = JsonSerializer.Deserialize<Error>(respErrorJson);
 
             StringBuilder sb = new StringBuilder("取得結果: ").Append(response.StatusCode.ToString());
             sb.Append("\r\n詳細: ").Append(error.Message);
@@ -61,6 +66,17 @@
         }
 
         // 正常時
-        //foreach ()
+        string respJson = await response.Content.ReadAsStringAsync();
+        IpAddressGetResp resp = JsonSerializer.Deserialize<IpAddressGetResp>(respJson);
+        this.ipAddressList = new List<Tuple<string, List<string>, string>>();
+        foreach (PcInfo pi in resp.PcData)
+        {
+            Tuple<string, List<string>, string> element = new Tuple<string, List<string>, string>(
+                pi.PcName,
+                pi.IpAddress.Split("\r\n").ToList(),
+                pi.UpdatedDateTime);
+            ipAddressList.Add(element);
+        }
+        this.StateHasChanged();
     }
 }
