@@ -25,6 +25,12 @@
 
     private async void RegisterPc()
     {
+        if (string.IsNullOrEmpty(this.pcName))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Error: PC name is null or empty.");
+            return;
+        }
+
         PcRegisterReq reqBodyObj = new PcRegisterReq
         {
             MailAddress = this.mailAddress,

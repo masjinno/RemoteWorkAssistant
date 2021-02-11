@@ -19,17 +19,24 @@
 {
     @foreach (Tuple<string, List<string>, string> pc in ipAddressList)
     {
-        <div>
-            <input type="checkbox" />
-            <label>@pc.Item1</label>
-            <div>
-                <p>更新日時：@pc.Item3</p>
-                <p>
-                    @foreach (string ia in pc.Item2)
-                    {
-                        <label>@ia</label><br />
-                    }
-                </p>
+        <div class="cp_actab">
+            <input id="tab-@pc.Item1" type="checkbox"/>
+            <label for="tab-@pc.Item1">@pc.Item1</label>
+            <div class="cp_actab-content">
+                @if (pc.Item2 == null)
+                {
+                    <p>データなし</p>
+                }
+                else
+                {
+                    <p>更新日時：@pc.Item3</p>
+                    <p>
+                        @foreach (string ia in pc.Item2)
+                        {
+                            @ia<br />
+                        }
+                    </p>
+                }
             </div>
         </div>
     }
@@ -71,10 +78,17 @@
         this.ipAddressList = new List<Tuple<string, List<string>, string>>();
         foreach (PcInfo pi in resp.PcData)
         {
+            List<string> ipaddress;
+            if (!string.IsNullOrEmpty(pi.IpAddress))
+            {
+                ipaddress = pi.IpAddress.Split("\r\n").ToList();
+            }
+            else
+            {
+                ipaddress = null;
+            }
             Tuple<string, List<string>, string> element = new Tuple<string, List<string>, string>(
-                pi.PcName,
-                pi.IpAddress.Split("\r\n").ToList(),
-                pi.UpdatedDateTime);
+                pi.PcName, ipaddress, pi.UpdatedDateTime);
             ipAddressList.Add(element);
         }
         this.StateHasChanged();

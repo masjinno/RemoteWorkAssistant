@@ -23,6 +23,12 @@
 
     private async void RegisterUser()
     {
+        if (string.IsNullOrEmpty(this.mailAddress) || string.IsNullOrEmpty(this.password))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Error: Mail address or password is null or empty.");
+            return;
+        }
+
         UserRegisterReq reqBodyObj = new UserRegisterReq
         {
             MailAddress = this.mailAddress,
