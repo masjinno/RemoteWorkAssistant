@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteWorkAssistant.Server", "RemoteWorkAssistant\Server\RemoteWorkAssistant.Server.csproj", "{DBA210D1-102E-43C5-B45D-232B26003F29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteWorkAssistant.Server", "RemoteWorkAssistant\Server\RemoteWorkAssistant.Server.csproj", "{DBA210D1-102E-43C5-B45D-232B26003F29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteWorkAssistant.Client", "RemoteWorkAssistant\Client\RemoteWorkAssistant.Client.csproj", "{F439B411-1248-4273-A7B9-9A5F1DAE0482}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteWorkAssistant.Client", "RemoteWorkAssistant\Client\RemoteWorkAssistant.Client.csproj", "{F439B411-1248-4273-A7B9-9A5F1DAE0482}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteWorkAssistant.Shared", "RemoteWorkAssistant\Shared\RemoteWorkAssistant.Shared.csproj", "{52E1FF94-0721-4400-B9EB-E3030602A5EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteWorkAssistant.Shared", "RemoteWorkAssistant\Shared\RemoteWorkAssistant.Shared.csproj", "{52E1FF94-0721-4400-B9EB-E3030602A5EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,7 +1,39 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h1>Home</h1>
 
-Welcome to your new app.
+<h2>機能説明</h2>
+<ul>
+    <li>
+        <a href="/user">User</a>のページでユーザー登録をする
+        <ul>
+            <li>アカウント(メールアドレス)とパスワードを入力する</li>
+            <li>システムからメールを送って本人か認証する作業は未実装</li>
+            <li>ログイン機能は未実装</li>
+        </ul>
+    </li>
+    <li>
+        <a href="/pc">PC</a>のページでPCを登録する
+        <ul>
+            <li>アカウントとパスワードおよびPCの名称を登録する</li>
+        </ul>
+    </li>
+    <li>
+        IPアドレスを登録するサービスプログラムをインストールする<br/>
+        設定項目：
+        <ul>
+            <li>サーバーURLの指定（この<a href="">LINK</a>のURLをコピーしてください）</li>
+            <li>ユーザー登録に使用したアカウントとパスワード</li>
+            <li>PC起動時にサービスが自動起動することを許可するか</li>
+            <li>IPアドレスを登録する処理が走るタイミングの指定</li>
+        </ul>
+    </li>
+    <li>
+        <a href="/ipaddress">IP Address</a>のページで登録されたIPアドレスを確認する
+        <ul>
+            <li>確認には、アカウントとパスワードが必要</li>
+        </ul>
+    </li>
+</ul>
 
 <SurveyPrompt Title="How is Blazor working for you?" />

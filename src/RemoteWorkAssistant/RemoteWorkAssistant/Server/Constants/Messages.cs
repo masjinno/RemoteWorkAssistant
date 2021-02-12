@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace RemoteWorkAssistant.Server.Constants
+﻿namespace RemoteWorkAssistant.Server.Constants
 {
     public enum Messages
     {
@@ -16,7 +11,7 @@ namespace RemoteWorkAssistant.Server.Constants
         EMAIL_NOT_FOUND,
 
         // HTTP Status: 404
-        [StringValue("Not found Pc name.")]
+        [StringValue("Not found PC name.")]
         PC_NAME_NOT_FOUND,
 
         // HTTP Status: 409
@@ -24,7 +19,7 @@ namespace RemoteWorkAssistant.Server.Constants
         EMAIL_CONFLICT,
 
         // HTTP Status: 409
-        [StringValue("Pc name is conflicted.")]
+        [StringValue("PC name is conflicted.")]
         PC_NAME_CONFLICT
     }
 }

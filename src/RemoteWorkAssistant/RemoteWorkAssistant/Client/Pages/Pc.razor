@@ -1,0 +1,53 @@
+﻿@page "/pc"
+@using RemoteWorkAssistant.Shared.Dto
+@using System.Text
+@using System.Text.Json
+@inject HttpClient Http
+@inject IJSRuntime JsRuntime
+
+<h1>PC</h1>
+
+<h2>PCの登録</h2>
+
+<div>
+    <p>メールアドレス: <input type="text" @bind="mailAddress" placeholder="address@example.com" /></p>
+    <p>パスワード: <input type="password" @bind="password" /></p>
+    <p>PC名称: <input type="text" @bind="pcName" placeholder="16F-N-DesktopPC"/></p>
+    <button class="btn btn-primary" @onclick="RegisterPc">登録</button>
+</div>
+
+@code {
+    private string mailAddress;
+    private string password;
+    private string pcName;
+
+    private readonly string REGISTER_PC_URI = "api/v1/pc";
+
+    private async void RegisterPc()
+    {
+        if (string.IsNullOrEmpty(this.pcName))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Error: PC name is null or empty.");
+            return;
+        }
+
+        PcRegisterReq reqBodyObj = new PcRegisterReq
+        {
+            MailAddress = this.mailAddress,
+            Password = this.password,
+            PcName = this.pcName
+        };
+        StringContent reqBody = new StringContent(JsonSerializer.Serialize(reqBodyObj), Encoding.UTF8, @"application/json");
+        HttpResponseMessage response = await Http.PostAsync(this.REGISTER_PC_URI, reqBody);
+
+        StringBuilder sb = new StringBuilder("登録結果: ");
+        sb.Append(response.StatusCode.ToString());
+        if (!response.IsSuccessStatusCode)
+        {
+            string respJson = await response.Content.ReadAsStringAsync();
+            Error error = JsonSerializer.Deserialize<Error>(respJson);
+            sb.Append("\r\n詳細: ").Append(error.Message);
+        }
+        await JsRuntime.InvokeVoidAsync("alert", sb.ToString());
+    }
+}

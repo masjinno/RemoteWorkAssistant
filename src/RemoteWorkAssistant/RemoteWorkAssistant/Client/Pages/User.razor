@@ -1,0 +1,50 @@
+﻿@page "/user"
+@using RemoteWorkAssistant.Shared.Dto
+@using System.Text
+@using System.Text.Json
+@inject HttpClient Http
+@inject IJSRuntime JsRuntime
+
+<h1>ユーザー管理画面</h1>
+
+<h2>新規ユーザーの登録</h2>
+
+<div>
+    <p>メールアドレス: <input type="text" @bind="mailAddress" placeholder="address@example.com" /></p>
+    <p>パスワード: <input type="password" @bind="password" /></p>
+    <button class="btn btn-primary" @onclick="RegisterUser">登録</button>
+</div>
+
+@code {
+    private string mailAddress;
+    private string password;
+
+    private readonly string REGISTER_USER_URI = "api/v1/user";
+
+    private async void RegisterUser()
+    {
+        if (string.IsNullOrEmpty(this.mailAddress) || string.IsNullOrEmpty(this.password))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Error: Mail address or password is null or empty.");
+            return;
+        }
+
+        UserRegisterReq reqBodyObj = new UserRegisterReq
+        {
+            MailAddress = this.mailAddress,
+            Password = this.password
+        };
+        StringContent reqBody = new StringContent(JsonSerializer.Serialize(reqBodyObj), Encoding.UTF8, @"application/json");
+        HttpResponseMessage response = await Http.PostAsync(this.REGISTER_USER_URI, reqBody);
+
+        StringBuilder sb = new StringBuilder("登録結果: ");
+        sb.Append(response.StatusCode.ToString());
+        if (!response.IsSuccessStatusCode)
+        {
+            string respJson = await response.Content.ReadAsStringAsync();
+            Error error = JsonSerializer.Deserialize<Error>(respJson);
+            sb.Append("\r\n詳細: ").Append(error.Message);
+        }
+        await JsRuntime.InvokeVoidAsync("alert", sb.ToString());
+    }
+}
