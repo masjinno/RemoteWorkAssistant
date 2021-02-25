@@ -10,6 +10,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteWorkAssistant.Shared", "RemoteWorkAssistant\Shared\RemoteWorkAssistant.Shared.csproj", "{52E1FF94-0721-4400-B9EB-E3030602A5EF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteWorkAssistant.Service", "RemoteWorkAssistant\Service\RemoteWorkAssistant.Service.csproj", "{293D97D5-BA26-4F37-AB05-5B4FEEB8CBAC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{52E1FF94-0721-4400-B9EB-E3030602A5EF} = {52E1FF94-0721-4400-B9EB-E3030602A5EF}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

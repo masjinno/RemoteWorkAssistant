@@ -19,6 +19,6 @@ namespace RemoteWorkAssistant.Service
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
-                });
+                }).UseWindowsService();
     }
 }
